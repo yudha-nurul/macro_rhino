@@ -7,6 +7,8 @@ RS = Rhino.GetScriptObject
 
 
 """
+https://stevebaer.wordpress.com/
+
 -----------------------------------------------
 
 
