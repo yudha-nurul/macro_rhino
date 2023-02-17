@@ -1,13 +1,65 @@
 import rhinoscriptsyntax as rs
-import os, time, sys, win32com.client
-Rhino = win32com.client.Dispatch("Rhino3.Application")
-os = time.sleep(1)
-Rhino.Visible = True
-RS = Rhino.GetScriptObject
+import scriptcontext as sc
+import clr
+clr.AddReference("RhinoCommon")
+import Rhino
+import Rhino.Geometry
+#rs.Command
+
+rs.EnableRedraw(False)
+
+NamaLayer=[]
+Quantity=[]
+layers=rs.LayerNames()
+#masukkan nama2 layer yang aktif ke list NamaLayer
+for layer in layers:
+    if rs.IsLayerOn(layer):
+        NamaLayer.append(layer)
+print(NamaLayer)
+
+for layer in NamaLayer:
+    #rs.ObjectsByLayer(layer, True)
+          objtype = rs.ObjectType()
+          print("Object type:", objtype)
+
+print(Quantity)
 
 
 """
 https://stevebaer.wordpress.com/
+-----------------------------------------------
+Returns the object type
+    Parameters:
+      object_id (guid): identifier of an object
+    Returns:
+      number: The object type if successful.
+        The valid object types are as follows:
+        Value   Description
+          0           Unknown object
+          1           Point
+          2           Point cloud
+          4           Curve
+          8           Surface or single-face brep
+          16          Polysurface or multiple-face
+          32          Mesh
+          256         Light
+          512         Annotation
+          4096        Instance or block reference
+          8192        Text dot object
+          16384       Grip object
+          32768       Detail
+          65536       Hatch
+          131072      Morph control
+          134217728   Cage
+          268435456   Phantom
+          536870912   Clipping plane
+          1073741824  Extrusion
+    Example:
+      import rhinoscriptsyntax as rs
+      obj = rs.GetObject("Select object")
+      if obj:
+          objtype = rs.ObjectType(obj)
+          print "Object type:", objtype
 
 -----------------------------------------------
 
