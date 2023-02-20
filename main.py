@@ -1,8 +1,10 @@
 import rhinoscriptsyntax as rs
-# import scriptcontext as sc
 import clr
 clr.AddReference("RhinoCommon")
+import Rhino
+import Rhino.Geometry
 import os
+
 from openpyxl import load_workbook   # Module needed for loading existing workbook
 from openpyxl.drawing.image import Image
 
