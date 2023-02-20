@@ -8,22 +8,18 @@ import Rhino.Geometry
 
 rs.EnableRedraw(False)
 
-NamaLayer=[]
-Quantity=[]
-layers=rs.LayerNames()
+NamaLayer=[] #siapkan list nama2 layer
+#Quantity=[]
+layers=rs.LayerNames() # nama2 semua layer
 #masukkan nama2 layer yang aktif ke list NamaLayer
 for layer in layers:
-    if rs.IsLayerOn(layer):
-        NamaLayer.append(layer)
+    if rs.IsLayerOn(layer):  # filter hanya pada layer yg on saja
+        rs.ObjectsByLayer(layer, True)  # select object pada layer yang on
+        objs = rs.SelectedObjects()
+        if objs:  # jika layer ini aja object nya, daftarkan nama layer ini kedalam list NamaLayer
+            NamaLayer.append(layer)
+        rs.UnselectAllObjects()
 print(NamaLayer)
-
-for layer in NamaLayer:
-    #rs.ObjectsByLayer(layer, True)
-          objtype = rs.ObjectType()
-          print("Object type:", objtype)
-
-print(Quantity)
-
 
 """
 https://stevebaer.wordpress.com/
