@@ -1,10 +1,10 @@
 import rhinoscriptsyntax as rs
-import scriptcontext as sc
+# import scriptcontext as sc
 import clr
 clr.AddReference("RhinoCommon")
-import Rhino
-import Rhino.Geometry
-#rs.Command
+import os
+from openpyxl import load_workbook   # Module needed for loading existing workbook
+from openpyxl.drawing.image import Image
 
 rs.EnableRedraw(False)
 
@@ -20,6 +20,38 @@ for layer in layers:
             NamaLayer.append(layer)
         rs.UnselectAllObjects()
 print(NamaLayer)
+
+layertobom = []
+for layer in layers:
+    nama = layer
+    cari = ':'
+    index = nama.rfind(cari)
+    if index >= 0:
+        #slice disini
+        index = index+1
+        layertobom.append(nama[index:len(nama)])
+    else:
+        layertobom.append(nama)
+print(layertobom)
+
+os.system('copy BOM_Blank.xlsx BOM.xlsx')
+wb = load_workbook(filename="BOM.xlsx")
+ws = wb.active
+
+img = Image('image.jpg'
+            '')
+ws.add_image(img, 'A1')
+
+for index, value in enumerate(layertobom):
+    cell = ws.cell(row=index+9, column=2)
+    cell.value = value
+
+# Save the spreadsheet
+wb.save(filename="BOM.xlsx")
+
+
+
+
 
 """
 https://stevebaer.wordpress.com/
