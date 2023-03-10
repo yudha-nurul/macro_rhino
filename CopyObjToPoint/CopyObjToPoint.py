@@ -1,65 +1,33 @@
 import rhinoscriptsyntax as rs
-import scriptcontext as sc
+objectIds = rs.GetObjects("Select objects yang mau di COPY")
+a = list()
+if objectIds:
+    start = rs.GetPoint("select REFERENSI Point nya")
+    print(start)
+    print(type(start))
+    
+    if start:
+        targetPoints = rs.GetObjects("select point TARGETnya",rs.filter.point | rs.filter.pointcloud,True,True)
+        #end = rs.GetPoint("Point to copy to", start)
+        #if end:
+        for point in targetPoints:
+            xyz = rs.PointCoordinates(point)
+            xyzok1 = xyz - start
+            rs.CopyObjects( objectIds, xyzok1 )
 
-import clr
-clr.AddReference("RhinoCommon")
-import Rhino
-import Rhino.Geometry
 
-# import os
+# print(a)
+            #if xyzok1:
+#rs.Command("_Copy")
+#print(xyz) #xyz ini sudah ok
+#translation = point-start
+#rs.CopyObjects( objectIds, translation )
 
-def BatchExport3dmByLayer():
-    doc_name = sc.doc.Name
-    ft = "igs"
-    filt = "{} Files (*.{})|*.{}||".format(ft, ft.lower(), ft.lower())
-    if not doc_name:
-        # document hasn't been saved
-        msg = "Main file name/folder for {} export?".format(ft)
-        filename = rs.SaveFileName(msg, filt)
-        # SaveFileName returns the complete path plus file name
-        if filename == None: return
-    else:
-        # document has been saved, get path
-        msg = "Folder for {} export? (Enter to save in current folder)".format(ft)
-        filename = rs.SaveFileName(msg, filt)
-        if filename == None: return
+""" target point = point2 coordinate, contohnya :
+-52.6759008050801,52.3893563178108,-1.41394598074385E-06
+-49.0277048977212,40.6402454111804,-1.41394598074385E-06
 
-    # start the export sequence
-    rs.EnableRedraw(False)
-    layers = rs.LayerNames()
-    for layer in layers:
-        if rs.IsLayerSelectable(layer):
-            # split layer name at character "::"
-            layer_name = layer.split(":")[-1]
-            e_file_name = '"{} {}.{}" '.format(filename[:-4], layer_name, ft.lower())
-            rs.UnselectAllObjects()
-            rs.ObjectsByLayer(layer, True)
-            objs = rs.SelectedObjects()
-            if objs:
-                # runs the export using the file name/path and your settings
-                rs.Command("-_Export " + e_file_name + " _Enter", False)
-            rs.UnselectAllObjects()
-
-BatchExport3dmByLayer()
-
+targetnya menjadi :
+    ("_Copy 0,0,0 0,10,0 _Enter")
 """
- from comtypes.client import GetActiveObject
-import sys
-import os
-from contextlib import redirect_stdout
-import rhino3dm
 
-
-model = rhino3dm.File3dm.Read("sample.3dm")
-
-#model.runcommand("_Polyline")
-model.Write('_Polyline')
-
-# import pymsgbox
-import win32com.client
-ps = win32com.client.Dispatch("Rhino 7.Application")
-ps.Visible = True
-
-# ps.exec('_Polyline')
-================================================================
-"""

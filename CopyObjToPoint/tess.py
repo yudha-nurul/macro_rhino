@@ -1,15 +1,21 @@
 import rhinoscriptsyntax as rs
 #x = ("_Copy 0,0,0 0,10,0 _Enter")
-x = []
+x = list()
 x.append('"')
 x.append('_Copy')
+x.append(' ')
 x.append('0,0,0')
+x.append(' ')
 x.append('0,10,0')
+x.append(' ')
 x.append('0,10,0')
+x.append(' ')
 x.append('_Enter')
 x.append('"')
 
 print(x)
+y = ''.join(x)
+print(y)
 #rs.Command(x)
             #print(xyz) #xyz ini sudah ok
             #translation = point-start
